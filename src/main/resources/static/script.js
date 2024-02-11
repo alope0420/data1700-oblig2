@@ -1,14 +1,19 @@
 'use strict';
 
 /* Define all existing field ids so we can loop through them instead of copy-pasting everything 6 times */
-const fieldIds = ['movies', 'count', 'firstname', 'lastname', 'tel', 'email'];
+const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
 let tickets = [];
 
 function addTickets() {
     if (!validateForm())
         return; // Don't add tickets if form has invalid data
 
-    const ticket = fieldIds.map(field => document.getElementById(field).value);
+    // Construct ticket object
+    let ticket = {};
+    for (const fieldId of fieldIds) {
+        ticket[fieldId] = document.getElementById(fieldId).value;
+    }
+
     tickets.push(ticket);
     refreshTicketTable();
     clearForm();
@@ -35,9 +40,9 @@ function refreshTicketTable() {
     // Readd all tickets to table
     for (const ticket of tickets) {
         const row = table.appendChild(document.createElement('tr'));
-        for (const field of ticket) {
+        for (const fieldId of fieldIds) {
             const cell = row.appendChild(document.createElement('td'));
-            cell.innerText = field;
+            cell.innerText = ticket[fieldId];
         }
     }
 }
