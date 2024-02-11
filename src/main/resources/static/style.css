@@ -10,6 +10,7 @@ body {
 }
 
 form {
+    /* Tabular display lets us align the form input fields nicely */
     display: table;
     border-spacing: 10px 5px;
 }

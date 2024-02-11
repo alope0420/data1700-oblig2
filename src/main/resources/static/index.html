@@ -13,8 +13,7 @@
 <form onsubmit="addTickets(); return false; //prevent form submission from triggering a HTTP request">
     <label>
         <span>Velg film:</span>
-        <!-- The data-display-name attributes in this form are used by the JS code
-        to construct a coherent error message if the field is left empty -->
+        <!-- The JS code uses the data-display-name attribute to construct error messages for empty fields -->
         <select id="movie" data-display-name="film">
             <option hidden disabled selected></option>
             <option>Flåklypa</option>
@@ -25,7 +24,8 @@
 
     <label>
         <span>Antall:</span>
-        <input type="number" id="count" data-display-name="antall">
+        <input id="count" data-display-name="antall">
+        <!-- Instead of the JS-based validation, we could use type="number" min="1" max="100" -->
     </label>
 
     <label>
@@ -46,6 +46,8 @@
     <label>
         <span>E-postadresse:</span>
         <input type="email" id="email" data-display-name="e-postadresse">
+        <!-- The input type "email" may enable some basic validation logic in the browser,
+        but the JS-based validation can still be tested by entering e.g. "a@a" as the e-mail address -->
     </label>
 
     <input type="submit" value="Kjøp billett(er)">

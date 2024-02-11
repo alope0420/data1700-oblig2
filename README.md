@@ -14,6 +14,6 @@ Applikasjonen består hovedsakelig av en HTML-fil, en JavaScript-fil og denne RE
 Brukeren velger film og antall billetter, oppgir litt personalia og trykker på &laquo;Kjøp billetter&raquo;.
 Før innsending blir inndataene validert, og eventuelle feil og mangler merkes med rødt.
 Det er egne tilleggsvalideringer for antall, telefonnummer og e-postadresse.
-Hvis valideringen er vellykket, blir dataene lagret i et objekt som dyttes inn i en matrise.
+Hvis valideringen lykkes, blir dataene lagret i et objekt som dyttes inn i en matrise.
 Deretter mates denne matrisen ut i en tabell nederst på nettsiden, og skjemaet tømmes, slik at brukeren kan gjøre en ny bestilling.
-Brukeren kan trykke på &laquo;Slett alle billettene&raquo; for å tømme matrisen og dermed tabellen.
+Brukeren kan trykke på &laquo;Slett alle billettene&raquo; for å tømme matrisen og dermed også tabellen.

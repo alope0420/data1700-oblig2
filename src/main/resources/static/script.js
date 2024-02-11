@@ -14,12 +14,11 @@ function addTickets() {
         ticket[fieldId] = document.getElementById(fieldId).value;
     }
 
+    // Add ticket to tickets array and refresh table
     tickets.push(ticket);
     refreshTicketTable();
-    clearForm();
-}
 
-function clearForm() {
+    // Clear form
     for (const fieldId of fieldIds) {
         document.getElementById(fieldId).value = '';
     }
@@ -64,9 +63,9 @@ function validateField(fieldId) {
     if (!field.value) {
         errorMessage = `Du må angi ${field.dataset.displayName}.`;
     }
-    // Number.isInteger(Number(...)) ensures we treat float values as invalid
-    else if (fieldId === 'count' && (!Number.isInteger(Number(field.value)) || field.value < 1 || field.value > 20)) {
-        errorMessage = 'Ugyldig antall billetter. Velg et heltall mellom 1 og 20.';
+    // Regex ensures only numeric characters can be used, so that floats are treated as invalid
+    else if (fieldId === 'count' && (!field.value.match(/^\d+$/) || field.value < 1 || field.value > 100)) {
+        errorMessage = 'Ugyldig antall billetter. Velg et heltall mellom 1 og 100.';
     }
     // Regex matches 8-digit numbers in the range 20 00 00 00 - 99 99 99 99
     else if (fieldId === 'tel' && !field.value.match(/^[2-9]\d{7}$/)) {
