@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bestilling av kinobilletter</title>
+    <script src="script.js"></script>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<h1>Bestilling av kinobilletter</h1>
+
+<form onsubmit="addTickets(); return false; //prevent form submission from triggering a HTTP request">
+    <label>
+        <span>Velg film:</span>
+        <!-- The data-display-name attributes in this form are used by the JS code
+        to construct a coherent error message if the field is left empty -->
+        <select id="movies" data-display-name="film">
+            <option hidden disabled selected></option>
+            <option>Flåklypa</option>
+            <option>Knives Out</option>
+            <option>8 Mile</option>
+        </select>
+    </label>
+
+    <label>
+        <span>Antall:</span>
+        <input type="number" id="count" data-display-name="antall">
+    </label>
+
+    <label>
+        <span>Fornavn:</span>
+        <input id="firstname" data-display-name="fornavn">
+    </label>
+
+    <label>
+        <span>Etternavn:</span>
+        <input id="lastname" data-display-name="etternavn">
+    </label>
+
+    <label>
+        <span>Telefonnr.:</span>
+        <input type="tel" id="tel" data-display-name="telefonnummer">
+    </label>
+
+    <label>
+        <span>E-postadresse:</span>
+        <input type="email" id="email" data-display-name="e-postadresse">
+    </label>
+
+    <input type="submit" value="Kjøp billett(er)">
+</form>
+
+<h2>Alle billetter</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Film</th>
+        <th>Antall</th>
+        <th>Fornavn</th>
+        <th>Etternavn</th>
+        <th>Telefonnr.</th>
+        <th>E-postadresse</th>
+    </tr>
+    </thead>
+    <tbody id="allTickets">
+    </tbody>
+</table>
+
+<input type="button" value="Slett alle billettene" onclick="deleteAllTickets();">
+
+</body>
+</html>
