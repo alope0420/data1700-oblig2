@@ -30,9 +30,7 @@ function deleteAllTickets() {
 function refreshTicketTable() {
     // Clear table body
     const table = document.getElementById('allTickets');
-    while (table.firstChild) {
-        table.firstChild.remove();
-    }
+    table.replaceChildren(); // Removes all child nodes when no arguments are given
 
     // Readd all tickets to table
     for (const ticket of tickets) {
@@ -55,8 +53,8 @@ function validateForm() {
 }
 
 function validateField(fieldId) {
-    const field = document.getElementById(fieldId);
     let errorMessage;
+    const field = document.getElementById(fieldId);
 
     if (!field.value) {
         errorMessage = `Du må angi ${field.dataset.displayName}.`;
