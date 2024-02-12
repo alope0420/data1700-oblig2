@@ -19,9 +19,7 @@ function addTickets() {
     refreshTicketTable();
 
     // Clear form
-    for (const fieldId of fieldIds) {
-        document.getElementById(fieldId).value = '';
-    }
+    document.getElementById('buyTicketForm').reset();
 }
 
 function deleteAllTickets() {
