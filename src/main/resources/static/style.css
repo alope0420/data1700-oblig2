@@ -1,16 +1,14 @@
 
-/* This file is not part of the assignment, I just want the webpage to look a bit nicer */
-* {
-    font-family: sans-serif;
-}
+/* This file is not part of the assignment; I just want the webpage to look a bit nicer */
 
 body {
+    font-family: sans-serif;
     width: min(800px, 100%);
     margin: auto;
 }
 
 form {
-    /* Tabular display lets us align the form input fields nicely */
+    /* Tabular display lets us line up the form input fields properly */
     display: table;
     border-spacing: 10px 5px;
 }
@@ -19,24 +17,21 @@ label {
     display: table-row;
 }
 
-label :nth-child(1) {
+label > * {
     display: table-cell;
+}
+
+label span:first-child {
     text-align: right;
 }
 
-label :nth-child(2) {
-    display: table-cell;
-    width: 100%;
-}
-
 .error-message {
-    color: firebrick;
-    display: table-cell;
+    color: #c22;
 }
 
 table {
-    border-collapse: collapse;
-    margin-bottom: 20px;
+    border-collapse: collapse; /* "Merge" table cell borders */
+    margin-bottom: 20px; /* Extra room between table and delete button */
 }
 
 thead {
