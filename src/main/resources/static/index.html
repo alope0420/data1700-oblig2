@@ -10,7 +10,7 @@
 
 <h1>Bestilling av kinobilletter</h1>
 
-<!-- We return false in onsubmit to prevent form submission from triggering a HTTP request -->
+<!-- return false; in onsubmit prevents form submission from triggering a HTTP request -->
 <form id="buyTicketForm" onsubmit="addTickets(); return false;">
     <label>
         <span>Velg film:</span>
@@ -26,7 +26,7 @@
     <label>
         <span>Antall:</span>
         <input id="count" data-display-name="antall">
-        <!-- Instead of the JS-based validation, we could use type="number" min="1" max="100" -->
+        <!-- Instead of the JS-based validation, we could use e.g. type="number" min="1" max="100" -->
     </label>
 
     <label>
