@@ -30,7 +30,7 @@ function deleteAllTickets() {
 function refreshTicketTable() {
     // Clear table body
     const table = document.getElementById('allTickets');
-    table.replaceChildren(); // Removes all child nodes when no arguments are given
+    table.replaceChildren();
 
     // Readd all tickets to table
     for (const ticket of tickets) {
@@ -42,37 +42,50 @@ function refreshTicketTable() {
     }
 }
 
-// In a real-world project, I would simply use HTML attributes such as "required" and "pattern" in order to perform
-// client-side input validation. However, it seems that the assignment specifically expects a JavaScript solution.
+// In a real-world project, it would probably be preferrable to use HTML attributes such as "required" and "pattern"
+// for client-side input validation. However, it seems that the assignment specifically expects a JavaScript solution.
 function validateForm() {
     // Remove any old error messages
     document.querySelectorAll('.error-message').forEach(elem => elem.remove());
 
     // Validate all fields and return true if all validations are successful
-    return fieldIds.map(validateField).reduce((a,b) => a && b);
+    return fieldIds.map(validateField).every(x => x);
 }
 
 function validateField(fieldId) {
-    let errorMessage;
-    const field = document.getElementById(fieldId);
 
+    // Validation pattern for integers. Accepts only numeric characters; treats floats as invalid.
+    const integerPattern = /^\d+$/;
+
+    // Validation pattern for phone numbers. Accepts 8-digit numbers in the range 20 00 00 00 - 99 99 99 99,
+    // or foreign numbers with an international call prefix (+ or 00) followed by at least 6 digits.
+    const telPattern = /^(?:[2-9]\d{7}|(?:\+|00)\d{6,})$/;
+
+    // Validation pattern for e-mail addresses. Source: How to Find or Validate an Email Address. (n.d.).
+    // Retrieved February 11, 2024, from https://www.regular-expressions.info/email.html
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+    // First name, last name and movie are not validated beyond requiring them to be non-empty.
+    // https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/
+
+    const field = document.getElementById(fieldId);
+    let errorMessage;
+
+    // Check if field is empty before doing more specific checks
     if (!field.value) {
         errorMessage = `Du må angi ${field.dataset.displayName}.`;
     }
-    // Regex ensures only numeric characters can be used, so that floats are treated as invalid
-    else if (fieldId === 'count' && (!field.value.match(/^\d+$/) || field.value < 1 || field.value > 100)) {
-        errorMessage = 'Ugyldig antall billetter. Velg et heltall mellom 1 og 100.';
+    else if (fieldId === 'count' && (!integerPattern.test(field.value) || field.value < 1 || field.value > 100)) {
+        errorMessage = 'Ugyldig antall billetter. (Maks 100.)';
     }
-    // Regex matches 8-digit numbers in the range 20 00 00 00 - 99 99 99 99
-    else if (fieldId === 'tel' && !field.value.match(/^[2-9]\d{7}$/)) {
-        errorMessage = 'Ugyldig telefonnummer. Velg et 8-sifret norsk nummer.';
+    else if (fieldId === 'tel' && !telPattern.test(field.value)) {
+        errorMessage = 'Ugyldig telefonnummer.';
     }
-    // Regex copied from https://www.regular-expressions.info/email.html
-    else if (fieldId === 'email' && !field.value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i)) {
+    else if (fieldId === 'email' && !emailPattern.test(field.value)) {
         errorMessage = 'Ugyldig e-postadresse.';
     }
     else {
-        // If we get to this point, all validations were successful
+        // All validation checks passed
         return true;
     }
 
