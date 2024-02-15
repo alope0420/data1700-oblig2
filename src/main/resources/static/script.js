@@ -1,7 +1,27 @@
 'use strict';
 
-/* Define all existing field ids so we can loop through them instead of copy-pasting everything 6 times */
+// Define all existing field ids so we can loop through them instead of copy-pasting everything 6 times
 const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
+
+// Regex patterns for field validation
+const validationPatterns = {
+    // For movie, firstname, and last name, no validation is needed apart from checking for non-emptiness:
+    // movie is a select control and therefore has no invalid values;
+    // as for names, we cannot really make any assumptions about what a valid or invalid name might look like.
+    // https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/
+
+    // Pattern for non-negative integers. Accepts only numeric characters; floats are considered invalid.
+    'count': /^\d+$/,
+
+    // Validation pattern for phone numbers. Accepts 8-digit numbers in the range 20 00 00 00 - 99 99 99 99,
+    // or foreign numbers with an international call prefix (+ or 00) followed by at least 6 digits.
+    'tel': /^(?:[2-9]\d{7}|(?:\+|00)\d{6,})$/,
+
+    // Validation pattern for e-mail addresses. Source: How to Find or Validate an Email Address. (n.d.).
+    // Retrieved February 11, 2024, from https://www.regular-expressions.info/email.html
+    'email': /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+}
+
 let tickets = [];
 
 function addTickets() {
@@ -42,7 +62,7 @@ function refreshTicketTable() {
     }
 }
 
-// In a real-world project, it would probably be preferrable to use HTML attributes such as "required" and "pattern"
+// In a real-world project, it would probably be preferable to use HTML attributes such as "required" and "pattern"
 // for client-side input validation. However, it seems that the assignment specifically expects a JavaScript solution.
 function validateForm() {
     // Remove any old error messages
@@ -53,36 +73,20 @@ function validateForm() {
 }
 
 function validateField(fieldId) {
-
-    // Validation pattern for integers. Accepts only numeric characters; treats floats as invalid.
-    const integerPattern = /^\d+$/;
-
-    // Validation pattern for phone numbers. Accepts 8-digit numbers in the range 20 00 00 00 - 99 99 99 99,
-    // or foreign numbers with an international call prefix (+ or 00) followed by at least 6 digits.
-    const telPattern = /^(?:[2-9]\d{7}|(?:\+|00)\d{6,})$/;
-
-    // Validation pattern for e-mail addresses. Source: How to Find or Validate an Email Address. (n.d.).
-    // Retrieved February 11, 2024, from https://www.regular-expressions.info/email.html
-    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
-    // First name, last name and movie are not validated beyond requiring them to be non-empty.
-    // https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/
-
     const field = document.getElementById(fieldId);
     let errorMessage;
 
-    // Check if field is empty before doing more specific checks
     if (!field.value) {
         errorMessage = `Du må angi ${field.dataset.displayName}.`;
     }
-    else if (fieldId === 'count' && (!integerPattern.test(field.value) || field.value < 1 || field.value > 100)) {
-        errorMessage = 'Ugyldig antall billetter. (Maks 100.)';
+    else if (validationPatterns[fieldId] && !validationPatterns[fieldId].test(field.value)) {
+        errorMessage = `Ugyldig ${field.dataset.displayName}.`;
     }
-    else if (fieldId === 'tel' && !telPattern.test(field.value)) {
-        errorMessage = 'Ugyldig telefonnummer.';
+    else if (fieldId === 'count' && field.value < 1) {
+        errorMessage = 'Du må bestille minst én billett.';
     }
-    else if (fieldId === 'email' && !emailPattern.test(field.value)) {
-        errorMessage = 'Ugyldig e-postadresse.';
+    else if (fieldId === 'count' && field.value > 100) {
+        errorMessage = 'Du kan ikke bestille mer enn 100 billetter om gangen.';
     }
     else {
         // All validation checks passed
