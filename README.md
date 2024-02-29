@@ -4,7 +4,7 @@ OsloMet-brukernavn: alope0420
 
 GitHub-brukernavn: alope0420
 
-GitHub-repo URL: https://github.com/alope0420/data1700-oblig1
+GitHub-repo URL: https://github.com/alope0420/data1700-oblig2
 
 Fullt navn: Alexander Benjamin Rød Opedal
 

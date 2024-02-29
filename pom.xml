@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>no.oslomet.alope0420</groupId>
-    <artifactId>data1700-oblig1</artifactId>
+    <artifactId>data1700-oblig2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>data1700-oblig1</name>
-    <description>data1700-oblig1</description>
+    <name>data1700-oblig2</name>
+    <description>data1700-oblig2</description>
     <properties>
         <java.version>21</java.version>
     </properties>
