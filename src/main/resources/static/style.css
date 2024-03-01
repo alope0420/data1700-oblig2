@@ -5,7 +5,7 @@ body {
     margin: auto;
 }
 
-form {
+form div {
     /* Tabular display lets us line up the form input fields properly */
     display: table;
     border-spacing: 10px 5px;

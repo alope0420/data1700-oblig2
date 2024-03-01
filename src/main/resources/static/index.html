@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Bestilling av kinobilletter</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+            crossorigin="anonymous"></script>
     <script src="script.js"></script>
     <link href="style.css" rel="stylesheet">
 </head>
@@ -10,46 +13,48 @@
 
 <h1>Bestilling av kinobilletter</h1>
 
-<!-- return false; in onsubmit prevents form submission from triggering a HTTP request -->
-<form id="buyTicketForm" onsubmit="addTickets(); return false;">
-    <label>
-        <span>Velg film:</span>
-        <select id="movie" required>
-            <option hidden disabled selected value>&nbsp;</option>
-            <option>Flåklypa</option>
-            <option>Knives Out</option>
-            <option>8 Mile</option>
-        </select>
-    </label>
+<form id="add-tickets-form">
+    <div class="input-table">
+        <label>
+            <span>Velg film:</span>
+            <select id="movie" required>
+                <option hidden disabled selected value>&nbsp;</option>
+                <option>Flåklypa</option>
+                <option>Knives Out</option>
+                <option>8 Mile</option>
+            </select>
+        </label>
 
-    <label>
-        <span>Antall:</span>
-        <input id="count" type="number" min="1" max="100" required>
-    </label>
+        <label>
+            <span>Antall:</span>
+            <input id="count" type="number" min="1" max="100" required>
+        </label>
 
-    <label>
-        <span>Fornavn:</span>
-        <input id="firstname" required>
-    </label>
+        <label>
+            <span>Fornavn:</span>
+            <input id="firstname" required>
+        </label>
 
-    <label>
-        <span>Etternavn:</span>
-        <input id="lastname" required>
-    </label>
+        <label>
+            <span>Etternavn:</span>
+            <input id="lastname" required>
+        </label>
 
-    <label>
-        <span>Telefonnr.:</span>
-        <input type="tel" id="tel" required
-            pattern="(?:[2-9]\d{7}|(?:\+|00)\d{6,})"
-            title="Skriv inn et gyldig telefonnummer">
-    </label>
+        <label>
+            <span>Telefonnr.:</span>
+            <input type="tel" id="tel" required
+                pattern="(?:[2-9]\d{7}|(?:\+|00)\d{6,})"
+                title="Skriv inn et gyldig telefonnummer">
+        </label>
 
-    <label>
-        <span>E-postadresse:</span>
-        <input type="email" id="email" required>
-    </label>
+        <label>
+            <span>E-postadresse:</span>
+            <input type="email" id="email" required>
+        </label>
+    </div>
 
     <input type="submit" value="Kjøp billett(er)">
+    <input id="fill-dummy-info-button" type="button" value="Fyll ut dummy info">
 </form>
 
 <h2>Alle billetter</h2>
@@ -64,11 +69,11 @@
         <th>E-postadresse</th>
     </tr>
     </thead>
-    <tbody id="allTickets">
+    <tbody id="all-tickets">
     </tbody>
 </table>
 
-<input type="button" value="Slett alle billettene" onclick="deleteAllTickets();">
+<input id="clear-tickets-button" type="button" value="Slett alle billettene">
 
 </body>
 </html>

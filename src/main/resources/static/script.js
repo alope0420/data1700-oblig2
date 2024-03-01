@@ -1,32 +1,49 @@
 'use strict';
 
-// Define all existing field ids so we can loop through them instead of copy-pasting everything 6 times
+// Define all existing field ids, so we can loop through them instead of copy-pasting everything 6 times
 const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
-let tickets = [];
 
-function addTickets() {
+$('document').ready(() => {
+
+    $('#add-tickets-form').submit(ev => {
+        ev.preventDefault();
+        addTickets();
+    });
+
+    $('#fill-dummy-info-button').click(fillDummyInfo);
+    $('#clear-tickets-button').click(clearTickets);
+    refreshTicketTable();
+})
+
+async function addTickets() {
     // Construct ticket object
     let ticket = {};
     for (const fieldId of fieldIds) {
         ticket[fieldId] = document.getElementById(fieldId).value;
     }
 
-    // Add ticket to tickets array and refresh table
-    tickets.push(ticket);
-    refreshTicketTable();
-
     // Clear form
-    document.getElementById('buyTicketForm').reset();
+    $("#add-tickets-form").trigger('reset');
+
+    // ...
+    await $.post("/tickets/add", ticket);
+
+    // Add ticket to tickets array and refresh table
+    await refreshTicketTable();
 }
 
-function deleteAllTickets() {
-    tickets = [];
-    refreshTicketTable();
+async function clearTickets() {
+    await $.get("/tickets/clear");
+    await refreshTicketTable();
 }
 
-function refreshTicketTable() {
+async function refreshTicketTable() {
+    // Request tickets list from backend
+    let tickets = await $.get("/tickets/list");
+
+    // TODO: Rewrite with JQuery
     // Clear table body
-    const table = document.getElementById('allTickets');
+    const table = document.getElementById('all-tickets');
     table.replaceChildren();
 
     // Readd all tickets to table
@@ -37,4 +54,18 @@ function refreshTicketTable() {
             cell.innerText = ticket[fieldId];
         }
     }
+}
+
+async function fillDummyInfo() {
+    let dummyInfo = await $.get("https://randomuser.me/api/?nat=no");
+    dummyInfo = dummyInfo.results[0];
+
+    let movieOptions = $('#movie option[value!=""]');
+
+    $('#movie').val(movieOptions[Math.floor(Math.random() * movieOptions.length)].value);
+    $('#count').val(Math.floor(Math.random() * 100));
+    $('#firstname').val(dummyInfo.name.first);
+    $('#lastname').val(dummyInfo.name.last);
+    $('#tel').val(dummyInfo.phone);
+    $('#email').val(dummyInfo.email);
 }
