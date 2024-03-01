@@ -19,13 +19,13 @@ async function addTickets() {
     // Construct ticket object
     let ticket = {};
     for (const fieldId of fieldIds) {
-        ticket[fieldId] = document.getElementById(fieldId).value;
+        ticket[fieldId] = $('#' + fieldId).val();
     }
 
     // Clear form
     $("#add-tickets-form").trigger('reset');
 
-    // ...
+    // Post ticket order to backend
     await $.post("/tickets/add", ticket);
 
     // Add ticket to tickets array and refresh table
@@ -33,7 +33,7 @@ async function addTickets() {
 }
 
 async function clearTickets() {
-    await $.get("/tickets/clear");
+    await $.post("/tickets/clear");
     await refreshTicketTable();
 }
 
@@ -41,17 +41,18 @@ async function refreshTicketTable() {
     // Request tickets list from backend
     let tickets = await $.get("/tickets/list");
 
-    // TODO: Rewrite with JQuery
     // Clear table body
-    const table = document.getElementById('all-tickets');
-    table.replaceChildren();
+    const table = $('#all-tickets');
+    table.empty();
 
     // Readd all tickets to table
     for (const ticket of tickets) {
-        const row = table.appendChild(document.createElement('tr'));
+        const row = $('<tr/>');
+        table.append(row);
         for (const fieldId of fieldIds) {
-            const cell = row.appendChild(document.createElement('td'));
-            cell.innerText = ticket[fieldId];
+            const cell = $('<td/>');
+            cell.text(ticket[fieldId]);
+            row.append(cell);
         }
     }
 }
@@ -61,9 +62,10 @@ async function fillDummyInfo() {
     dummyInfo = dummyInfo.results[0];
 
     let movieOptions = $('#movie option[value!=""]');
+    let movieIndex = Math.floor(Math.random() * movieOptions.length);
 
-    $('#movie').val(movieOptions[Math.floor(Math.random() * movieOptions.length)].value);
-    $('#count').val(Math.floor(Math.random() * 100));
+    $('#movie').val(movieOptions[movieIndex].value);
+    $('#count').val(1 + Math.floor(Math.random() * 99));
     $('#firstname').val(dummyInfo.name.first);
     $('#lastname').val(dummyInfo.name.last);
     $('#tel').val(dummyInfo.phone);

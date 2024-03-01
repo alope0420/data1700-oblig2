@@ -21,7 +21,7 @@ public class TicketController {
         return tickets;
     }
 
-    @GetMapping("/tickets/clear")
+    @PostMapping("/tickets/clear")
     public void clearTickets() {
         tickets.clear();
     }
