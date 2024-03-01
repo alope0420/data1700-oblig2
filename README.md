@@ -1,4 +1,4 @@
-DATA1700 &ndash; Oblig 1
+DATA1700 &ndash; Oblig 2
 ========================
 OsloMet-brukernavn: alope0420
 

@@ -14,9 +14,8 @@
 <form id="buyTicketForm" onsubmit="addTickets(); return false;">
     <label>
         <span>Velg film:</span>
-        <!-- The JS code uses the data-display-name attribute to construct error messages in Norwegian -->
-        <select id="movie" data-display-name="film">
-            <option hidden disabled selected value>&nbsp;</option>
+        <select id="movie" required>
+            <option hidden disabled selected></option>
             <option>Flåklypa</option>
             <option>Knives Out</option>
             <option>8 Mile</option>
@@ -25,30 +24,29 @@
 
     <label>
         <span>Antall:</span>
-        <input id="count" data-display-name="antall">
-        <!-- Instead of the JS-based validation, we could use e.g. type="number" min="1" max="100" -->
+        <input id="count" type="number" min="1" max="100" required>
     </label>
 
     <label>
         <span>Fornavn:</span>
-        <input id="firstname" data-display-name="fornavn">
+        <input id="firstname" required>
     </label>
 
     <label>
         <span>Etternavn:</span>
-        <input id="lastname" data-display-name="etternavn">
+        <input id="lastname" required>
     </label>
 
     <label>
         <span>Telefonnr.:</span>
-        <input type="tel" id="tel" data-display-name="telefonnummer">
+        <input type="tel" id="tel" required
+            pattern="(?:[2-9]\d{7}|(?:\+|00)\d{6,})"
+            title="Skriv inn et gyldig telefonnummer">
     </label>
 
     <label>
         <span>E-postadresse:</span>
-        <input type="email" id="email" data-display-name="e-postadresse">
-        <!-- The input type "email" may enable some basic validation logic in the browser,
-        but the JS-based validation can still be tested by entering e.g. "a@a" as the e-mail address -->
+        <input type="email" id="email" required>
     </label>
 
     <input type="submit" value="Kjøp billett(er)">

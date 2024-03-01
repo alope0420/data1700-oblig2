@@ -23,10 +23,6 @@ label span:first-child {
     text-align: right;
 }
 
-.error-message {
-    color: #c22;
-}
-
 table {
     border-collapse: collapse; /* "Merge" table cell borders */
     margin-bottom: 20px; /* Extra room between table and delete button */
