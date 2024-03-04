@@ -8,7 +8,7 @@ body {
 form div {
     /* Tabular display lets us line up the form input fields properly */
     display: table;
-    border-spacing: 10px 5px;
+    border-spacing: 10px 6px;
 }
 
 label {
@@ -21,6 +21,10 @@ label > * {
 
 label span:first-child {
     text-align: right;
+}
+
+input:user-invalid, select:user-invalid {
+    box-shadow: 0 0 1px 2px #f33;
 }
 
 table {

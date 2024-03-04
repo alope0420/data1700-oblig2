@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
     <meta charset="UTF-8">
     <title>Bestilling av kinobilletter</title>
@@ -43,13 +43,20 @@
         <label>
             <span>Telefonnr.:</span>
             <input type="tel" id="tel" required
-                pattern="(?:[2-9]\d{7}|(?:\+|00)\d{6,})"
+                pattern="([2-9]\d{7}|(\+|00)\d{6,})"
                 title="Skriv inn et gyldig telefonnummer">
         </label>
 
         <label>
             <span>E-postadresse:</span>
-            <input type="email" id="email" required>
+            <!--
+            Validation pattern for e-mail addresses. Source: How to Find or Validate an Email Address. (n.d.).
+            Retrieved February 11, 2024, from https://www.regular-expressions.info/email.html
+            Adapted for case-insensitivity. Extra escape characters inserted due to strange behavior in Firefox.
+            -->
+            <input type="email" id="email" required
+                   pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"
+                   title="Skriv inn en gyldig e-postadresse">
         </label>
     </div>
 
