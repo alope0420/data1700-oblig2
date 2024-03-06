@@ -43,7 +43,7 @@
         <label>
             <span>Telefonnr.:</span>
             <input type="tel" id="tel" required
-                pattern="([2-9]\d{7}|(\+|00)\d{6,})"
+                pattern="[2-9]\d{7}|(?:\+|00)\d{6,}"
                 title="Skriv inn et gyldig telefonnummer">
         </label>
 
@@ -62,6 +62,10 @@
 
     <input type="submit" value="Kjøp billett(er)">
     <input id="fill-dummy-info-button" type="button" value="Fyll ut dummy info">
+    <input type="button" onclick="
+        $('input, select').removeAttr('required').removeAttr('min').removeAttr('max').removeAttr('pattern');
+        $('input[type=number]').removeAttr('type');
+    " value="Fjern validering på klient">
 </form>
 
 <h2>Alle billetter</h2>
