@@ -1,8 +1,6 @@
 package no.oslomet.alope0420.data1700.oblig2;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +8,7 @@ import java.util.ArrayList;
 
 @Validated
 @RestController
-public class AppController implements ErrorController {
+public class AppController {
 
     private final ArrayList<Ticket> tickets = new ArrayList<>();
 
@@ -27,11 +25,5 @@ public class AppController implements ErrorController {
     @PostMapping("/tickets/clear")
     public void clearTickets() {
         tickets.clear();
-    }
-
-    @RequestMapping("/error")
-    public String handleError(HttpServletResponse response) {
-        return "<img style=\"display:block;margin:auto\" " +
-                "src=\"https://http.cat/" + response.getStatus() +"\">";
     }
 }
