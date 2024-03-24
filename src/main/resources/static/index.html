@@ -1,90 +1,106 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="no" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <title>Bestilling av kinobilletter</title>
+
+    <!-- JQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"
             integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous"></script>
+
+    <!-- Bootstrap -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha256-PI8n5gCcz9cQqQXm3PEtDuPG8qx9oFsFctPg0S5zb8g="
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+            integrity="sha256-3gQJhtmj7YnV1fmtbVcnAV6eI4ws0Tr48bVZCThtCGQ="
+            crossorigin="anonymous"></script>
+
+    <!-- Custom code -->
     <script src="script.js"></script>
-    <link href="style.css" rel="stylesheet">
 </head>
 <body>
+<div class="container-sm p-5 my-5 border" style="max-width: 800px;">
 
-<h1>Bestilling av kinobilletter</h1>
+    <h1>Bestilling av kinobilletter</h1>
 
-<form id="add-tickets-form">
-    <div class="input-table">
-        <label>
-            <span>Velg film:</span>
-            <select id="movie" required>
+    <form id="add-tickets-form">
+        <div class="form-floating my-2">
+            <select id="movie" class="form-select" required>
                 <option hidden disabled selected value>&nbsp;</option>
                 <option>Flåklypa</option>
                 <option>Knives Out</option>
                 <option>8 Mile</option>
             </select>
-        </label>
-
-        <label>
-            <span>Antall:</span>
-            <input id="count" type="number" min="1" max="100" required>
-        </label>
-
-        <label>
-            <span>Fornavn:</span>
-            <input id="firstname" required>
-        </label>
-
-        <label>
-            <span>Etternavn:</span>
-            <input id="lastname" required>
-        </label>
-
-        <label>
-            <span>Telefonnr.:</span>
-            <input type="tel" id="tel" required
+            <label for="movie">Film</label>
+        </div>
+        <div class="form-floating my-2">
+            <input id="count" class="form-control" type="number" min="1" max="100" required placeholder>
+            <label for="count">Antall</label>
+        </div>
+        <div class="form-floating my-2">
+            <input id="firstname" class="form-control" type="text" required placeholder>
+            <label for="firstname">Fornavn</label>
+        </div>
+        <div class="form-floating my-2">
+            <input id="lastname" class="form-control" type="text" required placeholder>
+            <label for="lastname">Etternavn</label>
+        </div>
+        <div class="form-floating my-2">
+            <input id="tel" class="form-control" type="tel" required placeholder
                 pattern="[2-9]\d{7}|(?:\+|00)\d{6,}"
                 title="Skriv inn et gyldig telefonnummer">
-        </label>
-
-        <label>
-            <span>E-postadresse:</span>
+            <label for="tel">Telefonnummer</label>
+        </div>
+        <div class="form-floating my-2">
             <!--
             Validation pattern for e-mail addresses. Source: How to Find or Validate an Email Address. (n.d.).
             Retrieved February 11, 2024, from https://www.regular-expressions.info/email.html
             Adapted for case-insensitivity. Extra escape characters inserted due to strange behavior in Firefox.
             -->
-            <input type="email" id="email" required
+            <input id="email" class="form-control" type="email" required placeholder
                    pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"
                    title="Skriv inn en gyldig e-postadresse">
-        </label>
+            <label for="email">E-postadresse</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Kjøp billett(er)
+        </button>
+        <button id="fill-dummy-info-button" type="button" class="btn btn-secondary">
+            Fyll ut dummy info
+        </button>
+        <button id="remove-client-validation" type="button" class="btn btn-secondary">
+            Fjern validering på klient
+        </button>
+    </form>
+
+    <hr class="my-4">
+
+    <h2>Alle billetter</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Film</th>
+                <th>Antall</th>
+                <th>Fornavn</th>
+                <th>Etternavn</th>
+                <th>Telefonnr.</th>
+                <th>E-postadresse</th>
+            </tr>
+            </thead>
+            <tbody id="all-tickets">
+            </tbody>
+        </table>
     </div>
 
-    <input type="submit" value="Kjøp billett(er)">
-    <input id="fill-dummy-info-button" type="button" value="Fyll ut dummy info">
-    <input type="button" onclick="
-        $('input, select').removeAttr('required').removeAttr('min').removeAttr('max').removeAttr('pattern');
-        $('input[type=number]').removeAttr('type');
-    " value="Fjern validering på klient">
-</form>
-
-<h2>Alle billetter</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Film</th>
-        <th>Antall</th>
-        <th>Fornavn</th>
-        <th>Etternavn</th>
-        <th>Telefonnr.</th>
-        <th>E-postadresse</th>
-    </tr>
-    </thead>
-    <tbody id="all-tickets">
-    </tbody>
-</table>
-
-<input id="clear-tickets-button" type="button" value="Slett alle billettene">
-
+    <button id="clear-tickets-button" class="btn btn-danger" type="button">
+        Slett alle billettene
+    </button>
+</div>
 </body>
 </html>

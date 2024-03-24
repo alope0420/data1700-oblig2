@@ -5,12 +5,25 @@ const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
 
 $('document').ready(() => {
 
+    // Add validation styles when user has entered data and unfocused input
+    $('#add-tickets-form .form-control, .form-select')
+        .blur(ev => {
+            if (ev.target.value) {
+                ev.target.parentElement.classList.add('was-validated');
+            }
+        })
+        // ... or when they try to submit with invalid fields
+        .on('invalid', ev => {
+            ev.target.parentElement.classList.add('was-validated');
+        });
+
     $('#add-tickets-form').submit(ev => {
         ev.preventDefault();
         addTickets();
     });
 
     $('#fill-dummy-info-button').click(fillDummyInfo);
+    $('#remove-client-validation').click(removeClientValidation);
     $('#clear-tickets-button').click(clearTickets);
     refreshTicketTable();
 })
@@ -22,31 +35,32 @@ async function addTickets() {
         ticket[fieldId] = $('#' + fieldId).val();
     }
 
-    // Clear form
-    $("#add-tickets-form").trigger('reset');
+    // Clear form and reset validation
+    $('#add-tickets-form').trigger('reset');
+    $('#add-tickets-form .was-validated').removeClass('was-validated');
 
     // Post ticket order to backend
-    await $.post("/tickets/add", ticket);
+    await $.post('/tickets/add', ticket);
 
     // Add ticket to tickets array and refresh table
     await refreshTicketTable();
 }
 
 async function clearTickets() {
-    await $.post("/tickets/clear");
+    await $.post('/tickets/clear');
     await refreshTicketTable();
 }
 
 async function refreshTicketTable() {
     // Request tickets list from backend
-    let tickets = await $.get("/tickets/list");
+    let tickets = await $.get('/tickets/list');
 
     // Clear table body
     const table = $('#all-tickets');
     table.empty();
 
-    // Readd all tickets to table
-    for (const ticket of tickets) {
+    // Re-add all tickets to table
+    for (const ticket of tickets.reverse()) {
         const row = $('<tr/>');
         table.append(row);
         for (const fieldId of fieldIds) {
@@ -58,16 +72,27 @@ async function refreshTicketTable() {
 }
 
 async function fillDummyInfo() {
-    let dummyInfo = await $.get("https://randomuser.me/api/?nat=no");
+    let dummyInfo = await $.get('https://randomuser.me/api/?nat=no');
     dummyInfo = dummyInfo.results[0];
 
-    let movieOptions = $('#movie option[value!=""]');
-    let movieIndex = Math.floor(Math.random() * movieOptions.length);
+    const movieOptions = $('#movie option[value!=""]');
+    const movieIndex = Math.floor(Math.random() * movieOptions.length);
+    const ticketCount = Math.ceil(Math.min(...Array.from({length: 20}, Math.random)) * 100);
 
     $('#movie').val(movieOptions[movieIndex].value);
-    $('#count').val(1 + Math.floor(Math.random() * 99));
+    $('#count').val(ticketCount);
     $('#firstname').val(dummyInfo.name.first);
     $('#lastname').val(dummyInfo.name.last);
     $('#tel').val(dummyInfo.phone);
     $('#email').val(dummyInfo.email);
+}
+
+function removeClientValidation() {
+    $('input, select')
+        .removeAttr('required')
+        .removeAttr('min')
+        .removeAttr('max')
+        .removeAttr('pattern');
+    $('input[type=number]')
+        .removeAttr('type');
 }
