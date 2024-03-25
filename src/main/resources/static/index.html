@@ -56,6 +56,7 @@
             <button id="fill-dummy-info-button" type="button" class="btn btn-secondary"
                     title="Fyll ut dummy-informasjon">
                 <i class="bi bi-magic"></i>
+                <i class="spinner-border spinner-border-sm d-none"></i>
             </button>
             <button id="settings-button" type="button" class="btn btn-secondary"
                     data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings"
@@ -109,7 +110,8 @@
             <label for="email">E-postadresse</label>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-2">
+        <button id="add-tickets-button" type="submit" class="btn btn-primary mt-2">
+            <i class="spinner-border spinner-border-sm d-none"></i>
             Kjøp billett(er)
         </button>
     </form>
@@ -135,6 +137,7 @@
     </div>
 
     <button id="clear-tickets-button" class="btn btn-danger mt-2" type="button">
+        <i class="spinner-border spinner-border-sm d-none"></i>
         Slett alle billettene
     </button>
 </div>
