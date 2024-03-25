@@ -18,39 +18,81 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
             integrity="sha256-3gQJhtmj7YnV1fmtbVcnAV6eI4ws0Tr48bVZCThtCGQ="
             crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Custom code -->
     <script src="script.js"></script>
 </head>
 <body>
-<div class="container-sm p-5 my-5 border" style="max-width: 800px;">
 
-    <h1>Bestilling av kinobilletter</h1>
+<!-- Offcanvas container with extra settings / dev options -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="settings">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Innstillinger</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Lukk" title="Lukk"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="form-switch">
+            <input id="dark-mode-switch" class="form-check-input" type="checkbox" role="switch" checked>
+            <label class="form-check-label" for="dark-mode-switch">Mørk&nbsp;modus</label>
+        </div>
+        <div class="form-switch" title="Slå av for å teste at validering på serversiden fungerer">
+            <input id="client-validation-switch" class="form-check-input" type="checkbox" role="switch" checked>
+            <label class="form-check-label" for="client-validation-switch">Utfør validering på klient</label>
+        </div>
+    </div>
+</div>
+
+<div class="main-container container-sm p-5 my-5 border" style="max-width: 800px;">
+
+    <div class="row">
+        <div class="col-auto">
+            <h1>Bestilling av kinobilletter</h1>
+        </div>
+
+        <!-- Icon buttons to the top right of the main container -->
+        <div class="col text-end">
+            <button id="fill-dummy-info-button" type="button" class="btn btn-secondary"
+                    title="Fyll ut dummy-informasjon">
+                <i class="bi bi-magic"></i>
+            </button>
+            <button id="settings-button" type="button" class="btn btn-secondary"
+                    data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings"
+                    title="Innstillinger">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+    </div>
 
     <form id="add-tickets-form">
         <div class="form-floating my-2">
             <select id="movie" class="form-select" required>
                 <option hidden disabled selected value>&nbsp;</option>
-                <option>Flåklypa</option>
-                <option>Knives Out</option>
-                <option>8 Mile</option>
+                <option>The Godfather</option>
+                <option>The Dark Knight</option>
+                <option>Pulp Fiction</option>
+                <option>Fight Club</option>
+                <option>Forrest Gump</option>
+                <option>Inception</option>
+                <option>Forrest Gump</option>
             </select>
             <label for="movie">Film</label>
         </div>
         <div class="form-floating my-2">
-            <input id="count" class="form-control" type="number" min="1" max="100" required placeholder>
+            <input id="count" type="number" class="form-control" min="1" max="100" required placeholder>
             <label for="count">Antall</label>
         </div>
         <div class="form-floating my-2">
-            <input id="firstname" class="form-control" type="text" required placeholder>
+            <input id="firstname" type="text" class="form-control" autocomplete="given-name" required placeholder>
             <label for="firstname">Fornavn</label>
         </div>
         <div class="form-floating my-2">
-            <input id="lastname" class="form-control" type="text" required placeholder>
+            <input id="lastname" type="text" class="form-control" autocomplete="family-name" required placeholder>
             <label for="lastname">Etternavn</label>
         </div>
         <div class="form-floating my-2">
-            <input id="tel" class="form-control" type="tel" required placeholder
+            <input id="tel" type="tel" class="form-control" autocomplete="tel" required placeholder
                 pattern="[2-9]\d{7}|(?:\+|00)\d{6,}"
                 title="Skriv inn et gyldig telefonnummer">
             <label for="tel">Telefonnummer</label>
@@ -61,20 +103,14 @@
             Retrieved February 11, 2024, from https://www.regular-expressions.info/email.html
             Adapted for case-insensitivity. Extra escape characters inserted due to strange behavior in Firefox.
             -->
-            <input id="email" class="form-control" type="email" required placeholder
+            <input id="email" type="email" class="form-control" autocomplete="email" required placeholder
                    pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"
                    title="Skriv inn en gyldig e-postadresse">
             <label for="email">E-postadresse</label>
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary mt-2">
             Kjøp billett(er)
-        </button>
-        <button id="fill-dummy-info-button" type="button" class="btn btn-secondary">
-            Fyll ut dummy info
-        </button>
-        <button id="remove-client-validation" type="button" class="btn btn-secondary">
-            Fjern validering på klient
         </button>
     </form>
 
@@ -93,14 +129,15 @@
                 <th>E-postadresse</th>
             </tr>
             </thead>
-            <tbody id="all-tickets">
+            <tbody id="tickets-table-body">
             </tbody>
         </table>
     </div>
 
-    <button id="clear-tickets-button" class="btn btn-danger" type="button">
+    <button id="clear-tickets-button" class="btn btn-danger mt-2" type="button">
         Slett alle billettene
     </button>
 </div>
+
 </body>
 </html>

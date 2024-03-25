@@ -3,10 +3,18 @@
 // Define all existing field ids, so we can loop through them instead of copy-pasting everything 6 times
 const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
 
+
 $('document').ready(() => {
+    $('#dark-mode-switch').change(ev => {
+        $('html').attr('data-bs-theme', ev.target.checked ? 'dark' : null);
+    });
+
+    $('#client-validation-switch').click(ev => {
+        $('#add-tickets-form').attr('novalidate', ev.target.checked ? null : '');
+    });
 
     // Add validation styles when user has entered data and unfocused input
-    $('#add-tickets-form .form-control, .form-select')
+    $('#add-tickets-form input, select')
         .blur(ev => {
             if (ev.target.value) {
                 ev.target.parentElement.classList.add('was-validated');
@@ -23,7 +31,6 @@ $('document').ready(() => {
     });
 
     $('#fill-dummy-info-button').click(fillDummyInfo);
-    $('#remove-client-validation').click(removeClientValidation);
     $('#clear-tickets-button').click(clearTickets);
     refreshTicketTable();
 })
@@ -56,7 +63,7 @@ async function refreshTicketTable() {
     let tickets = await $.get('/tickets/list');
 
     // Clear table body
-    const table = $('#all-tickets');
+    const table = $('#tickets-table-body');
     table.empty();
 
     // Re-add all tickets to table
@@ -85,14 +92,4 @@ async function fillDummyInfo() {
     $('#lastname').val(dummyInfo.name.last);
     $('#tel').val(dummyInfo.phone);
     $('#email').val(dummyInfo.email);
-}
-
-function removeClientValidation() {
-    $('input, select')
-        .removeAttr('required')
-        .removeAttr('min')
-        .removeAttr('max')
-        .removeAttr('pattern');
-    $('input[type=number]')
-        .removeAttr('type');
 }
