@@ -3,7 +3,7 @@
 // Define all existing field ids, so we can loop through them instead of copy-pasting everything 6 times
 const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
 
-$('document').ready(() => {
+$('document').ready(async () => {
     $('#dark-mode-switch').change(ev => {
         $('html').attr('data-bs-theme', ev.currentTarget.checked ? 'dark' : null);
     });
@@ -12,7 +12,7 @@ $('document').ready(() => {
         $('#add-tickets-form').attr('novalidate', ev.currentTarget.checked ? null : true);
     });
 
-    // Add validation styles when user has entered data and unfocused input
+    // Add validation styles when user has unfocused an input after entering data
     $('#add-tickets-form input, select')
         .blur(ev => {
             if ($(ev.currentTarget).val()) {
@@ -24,22 +24,18 @@ $('document').ready(() => {
             $(ev.currentTarget).parent().addClass('was-validated');
         });
 
-    $('#add-tickets-form').submit(ev => {
+    $('#add-tickets-form').submit(async ev => {
         ev.preventDefault();
-        addTickets();
+        await addTickets();
     });
 
     $('#fill-dummy-info-button').click(fillDummyInfo);
     $('#clear-tickets-button').click(clearTickets);
-    refreshTicketTable();
+    await refreshTicketTable();
 })
 
 async function addTickets() {
-    try {
-        // Disable button and show spinner
-        $('#add-tickets-button').prop('disabled', true);
-        $('#add-tickets-button i').removeClass('d-none');
-
+    await visualizeAsyncOperation('#add-tickets-button', async () => {
         // Construct ticket object
         let ticket = {};
         for (const fieldId of fieldIds) {
@@ -50,33 +46,17 @@ async function addTickets() {
         $('#add-tickets-form').trigger('reset');
         $('#add-tickets-form .was-validated').removeClass('was-validated');
 
-        // Post ticket order to backend
+        // Post ticket order to backend, then refresh table
         await $.post('/tickets/add', ticket);
-
-        // Add ticket to tickets array and refresh table
         await refreshTicketTable();
-
-    } finally {
-        // Hide spinner on button
-        $('#add-tickets-button').prop('disabled', false);
-        $('#add-tickets-button i').addClass('d-none');
-    }
+    });
 }
 
 async function clearTickets() {
-    try {
-        // Disable button and show spinner
-        $('#clear-tickets-button').prop('disabled', true);
-        $('#clear-tickets-button i').removeClass('d-none');
-
+    await visualizeAsyncOperation('#clear-tickets-button', async () => {
         await $.post('/tickets/clear');
         await refreshTicketTable();
-
-    } finally {
-        // Hide spinner on button
-        $('#clear-tickets-button').prop('disabled', false);
-        $('#clear-tickets-button i').addClass('d-none');
-    }
+    });
 }
 
 async function refreshTicketTable() {
@@ -99,13 +79,9 @@ async function refreshTicketTable() {
     }
 }
 
+// Function for filling the form with dummy data for testing purposes
 async function fillDummyInfo() {
-    try {
-        // Disable button and change icon to spinner
-        $(this).prop('disabled', true);
-        $(this).find('.bi').addClass('d-none');
-        $(this).find('.spinner-border').removeClass('d-none');
-
+    await visualizeAsyncOperation('#fill-dummy-info-button', async () => {
         // Get dummy information from API, and take first result only
         let dummyInfo = await $.get('https://randomuser.me/api/?nat=no');
         dummyInfo = dummyInfo.results[0];
@@ -122,11 +98,25 @@ async function fillDummyInfo() {
         $('#lastname').val(dummyInfo.name.last);
         $('#tel').val(dummyInfo.phone);
         $('#email').val(dummyInfo.email);
+    });
+}
+
+// Generalized utility function for disabling a button and changing its content while waiting for an async operation.
+// I use this to show a Bootstrap spinner while resolving a related HTTP request.
+// Not sure if this is a good design pattern - feedback welcome.
+async function visualizeAsyncOperation(elemSelector, operation) {
+    try {
+        $(elemSelector).prop('disabled', true);
+        $(elemSelector).find('.async-operation-inactive').addClass('d-none');
+        $(elemSelector).find('.async-operation-active').removeClass('d-none');
+
+        // Artificial delay to illustrate functionality better TODO: remove
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await operation();
 
     } finally {
-        // Enable button and change icon back
-        $(this).find('.bi').removeClass('d-none');
-        $(this).find('.spinner-border').addClass('d-none');
-        $(this).prop('disabled', false);
+        $(elemSelector).find('.async-operation-active').addClass('d-none');
+        $(elemSelector).find('.async-operation-inactive').removeClass('d-none');
+        $(elemSelector).prop('disabled', false);
     }
 }

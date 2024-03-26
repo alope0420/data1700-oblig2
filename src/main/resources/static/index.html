@@ -55,8 +55,10 @@
         <div class="col-auto text-end">
             <button id="fill-dummy-info-button" type="button" class="btn btn-secondary"
                     title="Fyll ut dummy-informasjon">
-                <i class="bi bi-magic"></i>
-                <i class="spinner-border spinner-border-sm d-none"></i>
+                <i class="async-operation-inactive
+                    bi bi-magic"></i>
+                <i class="async-operation-active d-none
+                    spinner-border spinner-border-sm "></i>
             </button>
             <button id="settings-button" type="button" class="btn btn-secondary"
                     data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings"
@@ -111,8 +113,12 @@
         </div>
 
         <button id="add-tickets-button" type="submit" class="btn btn-primary mt-2">
-            <i class="spinner-border spinner-border-sm d-none"></i>
-            Kjøp billett(er)
+            <span class="async-operation-inactive">
+                Kjøp billetter
+            </span>
+            <span class="async-operation-active d-none">
+                <i class="spinner-border spinner-border-sm"></i> Kjøper &hellip;
+            </span>
         </button>
     </form>
 
@@ -137,8 +143,12 @@
     </div>
 
     <button id="clear-tickets-button" class="btn btn-danger mt-2" type="button">
-        <i class="spinner-border spinner-border-sm d-none"></i>
-        Slett alle billettene
+        <span class="async-operation-inactive">
+            Slett alle billettene
+        </span>
+        <span class="async-operation-active d-none">
+            <i class="spinner-border spinner-border-sm"></i> Sletter &hellip;
+        </span>
     </button>
 </div>
 
