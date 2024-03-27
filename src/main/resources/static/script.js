@@ -149,6 +149,20 @@ function showToast(text, category) {
 
 // Construct error message from HTTP error object and display as toast message
 function showHttpErrorToast(error) {
-    error = error.responseJSON;
-    showToast(`Status ${error.status} ${error.error}:<br/>${error.message}`, 'danger');
+    showToast('En feil oppsto. ' + constructHttpStatusMessage(error), 'danger');
+}
+
+function constructHttpStatusMessage(xhr) {
+    const prefix = 'Status:';
+    if (xhr.responseJSON) {
+        const error = xhr.responseJSON;
+        return `${prefix} ${error.status} ${error.error}<br/>${error.message}`;
+    }
+    if (xhr.responseText) {
+        const text = $('<a/>').append(xhr.responseText).find('title').text();
+        if (text) {
+            return `${prefix} ${text}`;
+        }
+    }
+    return `${prefix} ${xhr.status} ${xhr.statusText}`;
 }
