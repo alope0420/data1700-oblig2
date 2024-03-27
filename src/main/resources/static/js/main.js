@@ -1,6 +1,6 @@
 'use strict';
 
-import {getHttpStatusString} from './js/util.js';
+import {visualizeAsyncOperation, showToast, showHttpErrorToast} from './util.js';
 
 // Define all existing field ids, so we can loop through them instead of copy-pasting everything 6 times
 const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
@@ -49,7 +49,8 @@ async function addTickets() {
         $('#add-tickets-form .was-validated').removeClass('was-validated');
 
         // Post ticket order to backend, then refresh table
-        await $.post('/tickets/add', ticket).fail(xhr => showHttpErrorToast(xhr, 'Kjøp av billetter mislyktes.'));
+        await $.post('/tickets/add', ticket)
+            .fail(xhr => showHttpErrorToast(xhr, 'Kjøp av billetter mislyktes.'));
         await refreshTicketTable();
         showToast('Billettene ble kjøpt', 'success');
     });
@@ -57,7 +58,8 @@ async function addTickets() {
 
 async function clearTickets() {
     await visualizeAsyncOperation('#clear-tickets-button', async () => {
-        await $.post('/tickets/clear').fail(xhr => showHttpErrorToast(xhr, 'Sletting av billetter mislyktes.'));
+        await $.post('/tickets/clear')
+            .fail(xhr => showHttpErrorToast(xhr, 'Sletting av billetter mislyktes.'));
         await refreshTicketTable();
         showToast('Alle billettene ble slettet', 'success');
     });
@@ -65,7 +67,8 @@ async function clearTickets() {
 
 async function refreshTicketTable() {
     // Request tickets list from backend
-    let tickets = await $.get('/tickets/list').fail(xhr => showHttpErrorToast(xhr, 'Henting av billetter mislyktes.'));
+    let tickets = await $.get('/tickets/list')
+        .fail(xhr => showHttpErrorToast(xhr, 'Henting av billetter mislyktes.'));
 
     // Clear table body
     const table = $('#tickets-table-body');
@@ -103,61 +106,4 @@ async function fillDummyInfo() {
         $('#tel').val(dummyInfo.phone);
         $('#email').val(dummyInfo.email);
     });
-}
-
-// Generalized utility function for disabling a button and changing its content while waiting for an async operation.
-// I use this to show a Bootstrap spinner while resolving a related HTTP request.
-// Not sure if this is a good design pattern - feedback welcome.
-async function visualizeAsyncOperation(elemSelector, operation) {
-    try {
-        $(elemSelector).prop('disabled', true);
-        $(elemSelector).find('.async-operation-inactive').addClass('d-none');
-        $(elemSelector).find('.async-operation-active').removeClass('d-none');
-
-        // Artificial delay to illustrate functionality better TODO: remove
-        await new Promise(resolve => setTimeout(resolve, 500));
-        await operation();
-
-    } finally {
-        $(elemSelector).find('.async-operation-active').addClass('d-none');
-        $(elemSelector).find('.async-operation-inactive').removeClass('d-none');
-        $(elemSelector).prop('disabled', false);
-    }
-}
-
-// Display toast message to user
-function showToast(text, category) {
-    const toast = $('#toast-template').clone().attr('id', null);
-    toast.find('.toast-body').html(text);
-
-    // Add bootstrap color scheme if specified
-    if (category)
-        toast.addClass(`text-bg-${category}`);
-
-    // Add toast to DOM, register in Bootstrap, and display to user
-    $('.toast-container').append(toast);
-    const instance = bootstrap.Toast.getOrCreateInstance(toast);
-    instance.show();
-
-    // Add fade-out effect when toast is going to be hidden
-    toast.on('hide.bs.toast', () => toast.addClass('fade-out'));
-
-    // Clean up once toast is no longer visible
-    toast.on('hidden.bs.toast', () => {
-        instance.dispose();
-        toast.remove();
-    });
-}
-
-// Construct error message from HTTP error object and display as toast message
-function showHttpErrorToast(xhr, message) {
-    showToast(message + '<br/>' + constructHttpStatusMessage(xhr), 'danger');
-}
-
-function constructHttpStatusMessage(xhr) {
-    const message = `Status: ${xhr.status} ${getHttpStatusString(xhr.status)}`;
-    if (xhr.responseJSON)
-        return message + '<br/>' + xhr.responseJSON.message;
-    else
-        return message;
 }
