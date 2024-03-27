@@ -1,5 +1,7 @@
 'use strict';
 
+import {getHttpStatusString} from './js/util.js';
+
 // Define all existing field ids, so we can loop through them instead of copy-pasting everything 6 times
 const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
 
@@ -47,7 +49,7 @@ async function addTickets() {
         $('#add-tickets-form .was-validated').removeClass('was-validated');
 
         // Post ticket order to backend, then refresh table
-        await $.post('/tickets/add', ticket).fail(showHttpErrorToast);
+        await $.post('/tickets/add', ticket).fail(xhr => showHttpErrorToast(xhr, 'Kjøp av billetter mislyktes.'));
         await refreshTicketTable();
         showToast('Billettene ble kjøpt', 'success');
     });
@@ -55,7 +57,7 @@ async function addTickets() {
 
 async function clearTickets() {
     await visualizeAsyncOperation('#clear-tickets-button', async () => {
-        await $.post('/tickets/clear').fail(showHttpErrorToast);
+        await $.post('/tickets/clear').fail(xhr => showHttpErrorToast(xhr, 'Sletting av billetter mislyktes.'));
         await refreshTicketTable();
         showToast('Alle billettene ble slettet', 'success');
     });
@@ -63,7 +65,7 @@ async function clearTickets() {
 
 async function refreshTicketTable() {
     // Request tickets list from backend
-    let tickets = await $.get('/tickets/list').fail(showHttpErrorToast);
+    let tickets = await $.get('/tickets/list').fail(xhr => showHttpErrorToast(xhr, 'Henting av billetter mislyktes.'));
 
     // Clear table body
     const table = $('#tickets-table-body');
@@ -148,21 +150,14 @@ function showToast(text, category) {
 }
 
 // Construct error message from HTTP error object and display as toast message
-function showHttpErrorToast(error) {
-    showToast('En feil oppsto. ' + constructHttpStatusMessage(error), 'danger');
+function showHttpErrorToast(xhr, message) {
+    showToast(message + '<br/>' + constructHttpStatusMessage(xhr), 'danger');
 }
 
 function constructHttpStatusMessage(xhr) {
-    const prefix = 'Status:';
-    if (xhr.responseJSON) {
-        const error = xhr.responseJSON;
-        return `${prefix} ${error.status} ${error.error}<br/>${error.message}`;
-    }
-    if (xhr.responseText) {
-        const text = $('<a/>').append(xhr.responseText).find('title').text();
-        if (text) {
-            return `${prefix} ${text}`;
-        }
-    }
-    return `${prefix} ${xhr.status} ${xhr.statusText}`;
+    const message = `Status: ${xhr.status} ${getHttpStatusString(xhr.status)}`;
+    if (xhr.responseJSON)
+        return message + '<br/>' + xhr.responseJSON.message;
+    else
+        return message;
 }
