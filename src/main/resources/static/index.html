@@ -23,42 +23,35 @@
 
     <!-- Custom code -->
     <script src="script.js"></script>
+    <style>
+        /* For fading out toast messages */
+        .fade-out {
+            transition: opacity .4s ease-out;
+        }
+        .toast-width-400 {
+            --bs-toast-max-width: 400px;
+        }
+    </style>
 </head>
 <body>
 
-<!-- Offcanvas container with extra settings / dev options -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="settings">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Innstillinger</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Lukk" title="Lukk"></button>
-    </div>
-    <div class="offcanvas-body">
-        <div class="form-switch">
-            <input id="dark-mode-switch" class="form-check-input" type="checkbox" role="switch" checked>
-            <label class="form-check-label" for="dark-mode-switch">Mørk modus</label>
-        </div>
-        <div class="form-switch" title="Slå av for å teste at validering på serversiden fungerer">
-            <input id="client-validation-switch" class="form-check-input" type="checkbox" role="switch" checked>
-            <label class="form-check-label" for="client-validation-switch">Utfør validering på klient</label>
-        </div>
-    </div>
-</div>
-
+<!-- Main container -->
 <div class="container-md p-3 p-sm-5 my-md-5 border">
 
     <div class="row">
         <div class="col">
-            <h2>Bestilling av kino&shy;billetter</h2>
+            <h1 class="h2">Bestilling av kino&shy;billetter</h1>
         </div>
-
-        <!-- Icon buttons to the top right of the main container -->
+        <!-- Icon buttons in the upper right corner -->
         <div class="col-auto text-end">
             <button id="fill-dummy-info-button" type="button" class="btn btn-secondary"
                     title="Fyll ut dummy-informasjon">
+                <!-- async-operation-* classes are custom classes used by JS
+                to toggle button content depending on current async operation state -->
                 <i class="async-operation-inactive
                     bi bi-magic"></i>
                 <i class="async-operation-active d-none
-                    spinner-border spinner-border-sm "></i>
+                    spinner-border spinner-border-sm"></i>
             </button>
             <button id="settings-button" type="button" class="btn btn-secondary"
                     data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings"
@@ -78,7 +71,6 @@
                 <option>Fight Club</option>
                 <option>Forrest Gump</option>
                 <option>Inception</option>
-                <option>Forrest Gump</option>
             </select>
             <label for="movie">Film</label>
         </div>
@@ -150,6 +142,35 @@
             <i class="spinner-border spinner-border-sm"></i> Sletter &hellip;
         </span>
     </button>
+</div>
+
+<!-- Offcanvas container with extra settings / dev options -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="settings">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Innstillinger</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Lukk" title="Lukk"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="form-switch">
+            <input id="dark-mode-switch" class="form-check-input" type="checkbox" role="switch" checked>
+            <label class="form-check-label" for="dark-mode-switch">Mørk modus</label>
+        </div>
+        <div class="form-switch" title="Slå av for å teste at validering på serversiden fungerer">
+            <input id="client-validation-switch" class="form-check-input" type="checkbox" role="switch" checked>
+            <label class="form-check-label" for="client-validation-switch">Utfør validering på klient</label>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed top-0 start-50 p-2 translate-middle-x">
+    <div id="toast-template" class="toast toast-width-400 mb-2" role="status">
+        <div class="d-flex">
+            <div class="toast-body"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                    data-bs-dismiss="toast" aria-label="Lukk">
+            </button>
+        </div>
+    </div>
 </div>
 
 </body>

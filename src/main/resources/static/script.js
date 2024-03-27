@@ -47,21 +47,23 @@ async function addTickets() {
         $('#add-tickets-form .was-validated').removeClass('was-validated');
 
         // Post ticket order to backend, then refresh table
-        await $.post('/tickets/add', ticket);
+        await $.post('/tickets/add', ticket).fail(showHttpErrorToast);
         await refreshTicketTable();
+        showToast('Billettene ble kjøpt', 'success');
     });
 }
 
 async function clearTickets() {
     await visualizeAsyncOperation('#clear-tickets-button', async () => {
-        await $.post('/tickets/clear');
+        await $.post('/tickets/clear').fail(showHttpErrorToast);
         await refreshTicketTable();
+        showToast('Alle billettene ble slettet', 'success');
     });
 }
 
 async function refreshTicketTable() {
     // Request tickets list from backend
-    let tickets = await $.get('/tickets/list');
+    let tickets = await $.get('/tickets/list').fail(showHttpErrorToast);
 
     // Clear table body
     const table = $('#tickets-table-body');
@@ -79,7 +81,7 @@ async function refreshTicketTable() {
     }
 }
 
-// Function for filling the form with dummy data for testing purposes
+// Fill the form with dummy data for testing purposes
 async function fillDummyInfo() {
     await visualizeAsyncOperation('#fill-dummy-info-button', async () => {
         // Get dummy information from API, and take first result only
@@ -87,7 +89,7 @@ async function fillDummyInfo() {
         dummyInfo = dummyInfo.results[0];
 
         // Generate random movie choice and ticket count
-        const movieOptions = $('#movie option[value!=""]');
+        const movieOptions = $('#movie option:not([disabled])');
         const movieIndex = Math.floor(Math.random() * movieOptions.length);
         const ticketCount = Math.ceil(Math.min(...Array.from({length: 20}, Math.random)) * 100);
 
@@ -119,4 +121,34 @@ async function visualizeAsyncOperation(elemSelector, operation) {
         $(elemSelector).find('.async-operation-inactive').removeClass('d-none');
         $(elemSelector).prop('disabled', false);
     }
+}
+
+// Display toast message to user
+function showToast(text, category) {
+    const toast = $('#toast-template').clone().attr('id', null);
+    toast.find('.toast-body').html(text);
+
+    // Add bootstrap color scheme if specified
+    if (category)
+        toast.addClass(`text-bg-${category}`);
+
+    // Add toast to DOM, register in Bootstrap, and display to user
+    $('.toast-container').append(toast);
+    const instance = bootstrap.Toast.getOrCreateInstance(toast);
+    instance.show();
+
+    // Add fade-out effect when toast is going to be hidden
+    toast.on('hide.bs.toast', () => toast.addClass('fade-out'));
+
+    // Clean up once toast is no longer visible
+    toast.on('hidden.bs.toast', () => {
+        instance.dispose();
+        toast.remove();
+    });
+}
+
+// Construct error message from HTTP error object and display as toast message
+function showHttpErrorToast(error) {
+    error = error.responseJSON;
+    showToast(`Status ${error.status} ${error.error}:<br/>${error.message}`, 'danger');
 }
