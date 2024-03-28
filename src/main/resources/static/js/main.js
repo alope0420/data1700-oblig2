@@ -6,8 +6,8 @@ import {visualizeAsyncOperation, showToast, showHttpErrorToast} from './util.js'
 const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
 
 $('document').ready(async () => {
-    $('#dark-mode-switch').change(ev => {
-        $('html').attr('data-bs-theme', ev.currentTarget.checked ? 'dark' : null);
+    $('#dark-mode-button').click(ev => {
+        $('html').attr('data-bs-theme', (index, attr) => attr ? null : 'dark');
     });
 
     $('#client-validation-switch').click(ev => {

@@ -35,9 +35,7 @@
 </head>
 <body>
 
-<!-- Main container -->
-<div class="container-md p-3 p-sm-5 my-md-5 border">
-
+<main class="container-md p-3 p-sm-5 my-md-5 border">
     <div class="row">
         <div class="col">
             <h1 class="h2">Bestilling av kino&shy;billetter</h1>
@@ -52,6 +50,10 @@
                     bi bi-magic"></i>
                 <i class="async-operation-active d-none
                     spinner-border spinner-border-sm"></i>
+            </button>
+            <button id="dark-mode-button" type="button" class="btn btn-secondary"
+                    title="Mørk modus">
+                <i class="bi bi-circle-half"></i>
             </button>
             <button id="settings-button" type="button" class="btn btn-secondary"
                     data-bs-toggle="offcanvas" data-bs-target="#settings" aria-controls="settings"
@@ -121,12 +123,12 @@
         <table class="table table-striped">
             <thead>
             <tr class="text-nowrap">
-                <th>Film</th>
-                <th>Antall</th>
-                <th>Fornavn</th>
-                <th>Etternavn</th>
-                <th>Telefonnr.</th>
-                <th>E-postadresse</th>
+                <th scope="row">Film</th>
+                <th scope="row">Antall</th>
+                <th scope="row">Fornavn</th>
+                <th scope="row">Etternavn</th>
+                <th scope="row">Telefonnr.</th>
+                <th scope="row">E-postadresse</th>
             </tr>
             </thead>
             <tbody id="tickets-table-body">
@@ -142,25 +144,21 @@
             <i class="spinner-border spinner-border-sm"></i> Sletter &hellip;
         </span>
     </button>
-</div>
+</main>
 
 <!-- Offcanvas container with extra settings / dev options -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="settings">
+<aside class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="settings">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">Innstillinger</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Lukk" title="Lukk"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="form-switch">
-            <input id="dark-mode-switch" class="form-check-input" type="checkbox" role="switch" checked>
-            <label class="form-check-label" for="dark-mode-switch">Mørk modus</label>
-        </div>
-        <div class="form-switch" title="Slå av for å teste at validering på serversiden fungerer">
+        <div class="form-switch user-select-none" title="Slå av for å teste at validering på serversiden fungerer">
             <input id="client-validation-switch" class="form-check-input" type="checkbox" role="switch" checked>
             <label class="form-check-label" for="client-validation-switch">Utfør validering på klient</label>
         </div>
     </div>
-</div>
+</aside>
 
 <div class="toast-container position-fixed top-0 start-50 p-2 translate-middle-x">
     <div id="toast-template" class="toast toast-width-400 mb-2" role="status">
