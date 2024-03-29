@@ -23,19 +23,12 @@
 
     <!-- Custom code -->
     <script type="module" src="js/main.js"></script>
-    <style>
-        /* For fading out toast messages */
-        .fade-out {
-            transition: opacity .4s ease-out;
-        }
-        .toast-width-400 {
-            --bs-toast-max-width: 400px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<main class="container-md p-3 p-sm-5 my-md-5 border">
+<main class="container-md p-0">
+<div class="container-helper m-auto p-2 p-sm-4 p-md-5 my-md-5 border">
     <div class="row">
         <div class="col">
             <h1 class="h2">Bestilling av kino&shy;billetter</h1>
@@ -106,7 +99,7 @@
             <label for="email">E-postadresse</label>
         </div>
 
-        <button id="add-tickets-button" type="submit" class="btn btn-primary mt-2">
+        <button id="add-tickets-button" type="submit" class="btn btn-primary mt-2 col-12 col-sm-auto">
             <span class="async-operation-inactive">
                 Kjøp billetter
             </span>
@@ -120,9 +113,9 @@
 
     <h2>Alle billetter</h2>
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped text-nowrap">
             <thead>
-            <tr class="text-nowrap">
+            <tr>
                 <th scope="row">Film</th>
                 <th scope="row">Antall</th>
                 <th scope="row">Fornavn</th>
@@ -136,7 +129,7 @@
         </table>
     </div>
 
-    <button id="clear-tickets-button" class="btn btn-danger mt-2" type="button">
+    <button id="clear-tickets-button" class="btn btn-danger mt-2 col-12 col-sm-auto" type="button">
         <span class="async-operation-inactive">
             Slett alle billettene
         </span>
@@ -144,6 +137,7 @@
             <i class="spinner-border spinner-border-sm"></i> Sletter &hellip;
         </span>
     </button>
+</div>
 </main>
 
 <!-- Offcanvas container with extra settings / dev options -->

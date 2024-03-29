@@ -1,0 +1,13 @@
+
+/* For fading out toast messages */
+.fade-out {
+    transition: opacity .4s ease-out;
+}
+.toast-width-400 {
+    --bs-toast-max-width: 400px;
+}
+.container-helper {
+    /* We cannot apply this directly on the main container element,
+       since it would also override the lower max-width values on smaller breakpoints. */
+    max-width: 960px;
+}
