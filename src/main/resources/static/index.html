@@ -34,7 +34,7 @@
             <h1 class="h2">Bestilling av kino&shy;billetter</h1>
         </div>
         <!-- Icon buttons in the upper right corner -->
-        <div class="col-auto text-end">
+        <div class="col-auto">
             <button id="fill-dummy-info-button" type="button" class="btn btn-secondary"
                     title="Fyll ut dummy-informasjon">
                 <!-- async-operation-* classes are custom classes used by JS
@@ -57,62 +57,83 @@
     </div>
 
     <form id="add-tickets-form">
-        <div class="form-floating my-2">
-            <select id="movie" class="form-select" required>
-                <option hidden disabled selected value>&nbsp;</option>
-                <option>The Godfather</option>
-                <option>The Dark Knight</option>
-                <option>Pulp Fiction</option>
-                <option>Fight Club</option>
-                <option>Forrest Gump</option>
-                <option>Inception</option>
-            </select>
-            <label for="movie">Film</label>
-        </div>
-        <div class="form-floating my-2">
-            <input id="count" type="number" class="form-control" min="1" max="100" required placeholder>
-            <label for="count">Antall</label>
-        </div>
-        <div class="form-floating my-2">
-            <input id="firstname" type="text" class="form-control" autocomplete="given-name" required placeholder>
-            <label for="firstname">Fornavn</label>
-        </div>
-        <div class="form-floating my-2">
-            <input id="lastname" type="text" class="form-control" autocomplete="family-name" required placeholder>
-            <label for="lastname">Etternavn</label>
-        </div>
-        <div class="form-floating my-2">
-            <input id="tel" type="tel" class="form-control" autocomplete="tel" required placeholder
-                pattern="[2-9]\d{7}|(?:\+|00)\d{6,}"
-                title="Skriv inn et gyldig telefonnummer">
-            <label for="tel">Telefonnummer</label>
-        </div>
-        <div class="form-floating my-2">
-            <!--
-            Validation pattern for e-mail addresses. Source: How to Find or Validate an Email Address. (n.d.).
-            Retrieved February 11, 2024, from https://www.regular-expressions.info/email.html
-            Adapted for case-insensitivity. Extra escape characters inserted due to strange behavior in Firefox.
-            -->
-            <input id="email" type="email" class="form-control" autocomplete="email" required placeholder
-                   pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"
-                   title="Skriv inn en gyldig e-postadresse">
-            <label for="email">E-postadresse</label>
-        </div>
+        <div class="row g-2 mt-0 mb-2">
+            <div class="col-sm-9">
+                <div class="form-floating">
+                    <select id="movie" class="form-select" required>
+                        <option hidden disabled selected value>&nbsp;</option>
+                        <option>The Godfather</option>
+                        <option>The Dark Knight</option>
+                        <option>Pulp Fiction</option>
+                        <option>Fight Club</option>
+                        <option>Forrest Gump</option>
+                        <option>Inception</option>
+                    </select>
+                    <label for="movie">Film</label>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-floating">
+                    <input id="count" type="number" min="1" max="100"
+                           class="form-control" required placeholder>
+                    <label for="count">Antall</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-floating">
+                    <input id="firstname" type="text" autocomplete="given-name"
+                           class="form-control" required placeholder>
+                    <label for="firstname">Fornavn</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-floating">
+                    <input id="lastname" type="text" autocomplete="family-name"
+                           class="form-control" required placeholder>
+                    <label for="lastname">Etternavn</label>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-floating">
+                    <input id="tel" type="tel" autocomplete="tel"
+                           class="form-control" required placeholder
+                           pattern="[2-9]\d{7}|(?:\+|00)\d{6,}"
+                           title="Skriv inn et gyldig telefonnummer">
+                    <label for="tel">Telefonnummer</label>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="form-floating">
+                    <!--
+                    Validation pattern for e-mail addresses. Source: How to Find or Validate an Email Address. (n.d.).
+                    Retrieved February 11, 2024, from https://www.regular-expressions.info/email.html
+                    Adapted for case-insensitivity. Extra escape characters inserted due to strange behavior in Firefox.
+                    -->
+                    <input id="email" type="email" autocomplete="email"
+                           class="form-control" required placeholder
+                           pattern="[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"
+                           title="Skriv inn en gyldig e-postadresse">
+                    <label for="email">E-postadresse</label>
+                </div>
+            </div>
 
-        <button id="add-tickets-button" type="submit" class="btn btn-primary mt-2 col-12 col-sm-auto">
-            <span class="async-operation-inactive">
-                Kjøp billetter
-            </span>
-            <span class="async-operation-active d-none">
-                <i class="spinner-border spinner-border-sm"></i> Kjøper &hellip;
-            </span>
-        </button>
+            <div class="col-sm-auto">
+                <button id="add-tickets-button" type="submit" class="btn btn-primary w-100">
+                    <span class="async-operation-inactive">
+                        Kjøp billetter
+                    </span>
+                    <span class="async-operation-active d-none">
+                        <i class="spinner-border spinner-border-sm"></i> Kjøper &hellip;
+                    </span>
+                </button>
+            </div>
+        </div>
     </form>
 
     <hr class="my-4">
 
     <h2>Alle billetter</h2>
-    <div class="table-responsive">
+    <div class="table-responsive my-2">
         <table class="table table-striped text-nowrap">
             <thead>
             <tr>
@@ -129,7 +150,7 @@
         </table>
     </div>
 
-    <button id="clear-tickets-button" class="btn btn-danger mt-2 col-12 col-sm-auto" type="button">
+    <button id="clear-tickets-button" class="btn btn-danger col-12 col-sm-auto" type="button">
         <span class="async-operation-inactive">
             Slett alle billettene
         </span>
