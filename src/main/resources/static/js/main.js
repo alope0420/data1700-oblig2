@@ -6,14 +6,6 @@ import {visualizeAsyncOperation, showToast, showHttpErrorToast} from './util.js'
 const fieldIds = ['movie', 'count', 'firstname', 'lastname', 'tel', 'email'];
 
 $('document').ready(async () => {
-    $('#dark-mode-button').click(ev => {
-        $('html').attr('data-bs-theme', (index, attr) => attr ? null : 'dark');
-    });
-
-    $('#client-validation-switch').click(ev => {
-        $('#add-tickets-form').attr('novalidate', ev.currentTarget.checked ? null : true);
-    });
-
     // Add validation styles when user has unfocused an input after entering data
     $('#add-tickets-form input, select')
         .blur(ev => {
@@ -29,6 +21,14 @@ $('document').ready(async () => {
     $('#add-tickets-form').submit(async ev => {
         ev.preventDefault();
         await addTickets();
+    });
+
+    $('#dark-mode-button').click(() => {
+        $('html').attr('data-bs-theme', (index, attr) => attr ? null : 'dark');
+    });
+
+    $('#client-validation-switch').click(ev => {
+        $('#add-tickets-form').attr('novalidate', ev.currentTarget.checked ? null : true);
     });
 
     $('#fill-dummy-info-button').click(fillDummyInfo);
